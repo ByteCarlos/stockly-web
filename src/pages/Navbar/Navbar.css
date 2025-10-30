@@ -1,0 +1,107 @@
+.navbar {
+  width: 20%;
+  height: 100vh;
+  background-color: #0d1b2a;
+  color: #d1d5db;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.2);
+}
+
+/* --- Top Section --- */
+.navbar-top {
+  display: flex;
+  flex-direction: column;
+}
+
+.navbar-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 20px;
+  border-bottom: 1px solid #1e2a38;
+}
+
+.navbar-icon {
+  color: #26a69a;
+}
+
+.navbar-title h1 {
+  color: #fff;
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.navbar-title p {
+  color: #9ca3af;
+  font-size: 12px;
+  margin: 0;
+}
+
+/* --- Menu Sections --- */
+.navbar-menu {
+  margin-top: 20px;
+}
+
+.menu-section {
+  margin-bottom: 20px;
+}
+
+.menu-title {
+  font-size: 12px;
+  color: #6b7280;
+  padding: 0 20px 8px 20px;
+}
+
+.menu-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 20px;
+  color: #d1d5db;
+  text-decoration: none;
+  border-radius: 6px;
+  transition: all 0.2s ease-in-out;
+}
+
+.menu-link:hover {
+  background-color: #1e2a38;
+  color: #ffffff;
+}
+
+.menu-link.active {
+  background-color: #26a69a;
+  color: #fff;
+}
+
+/* --- Bottom Section --- */
+.navbar-bottom {
+  border-top: 1px solid #1e2a38;
+  padding: 15px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.logout-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: none;
+  border: none;
+  color: #f87171;
+  font-size: 14px;
+  cursor: pointer;
+  transition: color 0.2s ease-in-out;
+}
+
+.logout-btn:hover {
+  color: #ef4444;
+}
+
+.menu-link span,
+.logout-btn span {
+  font-size: 14px;
+}
