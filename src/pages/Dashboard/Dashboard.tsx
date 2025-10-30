@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Package, FileText, AlertCircle, TrendingUp, Plus, BarChart3 } from 'lucide-react';
+import { Package, FileText, AlertCircle, TrendingUp, Plus, BarChart3, X } from 'lucide-react';
 
 interface Product {
   id: number;
@@ -24,7 +24,30 @@ interface DashboardProps {
   token: string;
 }
 
+interface NovoProdutoForm {
+  nome: string;
+  descricao: string;
+  sku: string;
+  categoria: string;
+  estoque: string;
+  preco: string;
+  status: string;
+  fornecedor: string;
+}
+
 const Dashboard: React.FC<DashboardProps> = ({ token: _token }) => {
+  const [showModal, setShowModal] = useState(false);
+  const [formData, setFormData] = useState<NovoProdutoForm>({
+    nome: '',
+    descricao: '',
+    sku: '',
+    categoria: '',
+    estoque: '',
+    preco: '',
+    status: 'ATIVO',
+    fornecedor: ''
+  });
+
   const [products] = useState<Product[]>([
     {
       id: 1,
@@ -99,6 +122,29 @@ const Dashboard: React.FC<DashboardProps> = ({ token: _token }) => {
       status: 'Baixo'
     }
   ]);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log('Novo produto:', formData);
+    // Aqui você faria a requisição para a API com o token
+    setShowModal(false);
+    // Limpar formulário
+    setFormData({
+      nome: '',
+      descricao: '',
+      sku: '',
+      categoria: '',
+      estoque: '',
+      preco: '',
+      status: 'ATIVO',
+      fornecedor: ''
+    });
+  };
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -232,7 +278,10 @@ const Dashboard: React.FC<DashboardProps> = ({ token: _token }) => {
         <div className="bg-white rounded-lg shadow-sm p-6">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-lg font-semibold text-gray-800">Produtos Recentes</h2>
-            <button className="flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-medium transition-colors">
+            <button 
+              onClick={() => setShowModal(true)}
+              className="flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-medium transition-colors"
+            >
               <Plus className="w-4 h-4" />
               Novo Produto
             </button>
@@ -260,6 +309,7 @@ const Dashboard: React.FC<DashboardProps> = ({ token: _token }) => {
                     </td>
                     <td className="py-4 px-4">
                       <span className={`inline-block px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(product.status)}`}>
+                        {product.status}
                       </span>
                     </td>
                     <td className="py-4 px-4 text-sm text-gray-600">{product.lastUpdate}</td>
@@ -270,6 +320,181 @@ const Dashboard: React.FC<DashboardProps> = ({ token: _token }) => {
           </div>
         </div>
       </div>
+
+      {/* Modal Novo Produto */}
+      {showModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            {/* Header do Modal */}
+            <div className="flex items-center justify-between p-6 border-b border-gray-200">
+              <h2 className="text-2xl font-bold text-gray-800">Novo Produto</h2>
+              <button
+                onClick={() => setShowModal(false)}
+                className="text-gray-400 hover:text-gray-600 transition-colors"
+              >
+                <X size={24} />
+              </button>
+            </div>
+
+            {/* Formulário */}
+            <form onSubmit={handleSubmit} className="p-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* Nome do Produto */}
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Nome do Produto *
+                  </label>
+                  <input
+                    type="text"
+                    name="nome"
+                    value={formData.nome}
+                    onChange={handleInputChange}
+                    required
+                    className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+                    placeholder="Ex: Notebook Dell Inspiron 15"
+                  />
+                </div>
+
+                {/* Descrição */}
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Descrição do Produto
+                  </label>
+                  <textarea
+                    name="descricao"
+                    value={formData.descricao}
+                    onChange={handleInputChange}
+                    rows={3}
+                    className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+                    placeholder="Descreva o produto..."
+                  />
+                </div>
+
+                {/* SKU */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    SKU *
+                  </label>
+                  <input
+                    type="text"
+                    name="sku"
+                    value={formData.sku}
+                    onChange={handleInputChange}
+                    required
+                    className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+                    placeholder="Ex: NBK-DEL-001"
+                  />
+                </div>
+
+                {/* Categoria */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Categoria *
+                  </label>
+                  <select
+                    name="categoria"
+                    value={formData.categoria}
+                    onChange={handleInputChange}
+                    required
+                    className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500 bg-white"
+                  >
+                    <option value="">Selecione...</option>
+                    <option value="Eletrônicos">Eletrônicos</option>
+                    <option value="Periféricos">Periféricos</option>
+                    <option value="Monitores">Monitores</option>
+                    <option value="Acessórios">Acessórios</option>
+                  </select>
+                </div>
+
+                {/* Estoque */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Estoque *
+                  </label>
+                  <input
+                    type="number"
+                    name="estoque"
+                    value={formData.estoque}
+                    onChange={handleInputChange}
+                    required
+                    min="0"
+                    className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+                    placeholder="0"
+                  />
+                </div>
+
+                {/* Preço */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Preço (R$) *
+                  </label>
+                  <input
+                    type="number"
+                    name="preco"
+                    value={formData.preco}
+                    onChange={handleInputChange}
+                    required
+                    min="0"
+                    step="0.01"
+                    className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+                    placeholder="0,00"
+                  />
+                </div>
+
+                {/* Status */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Status *
+                  </label>
+                  <select
+                    name="status"
+                    value={formData.status}
+                    onChange={handleInputChange}
+                    required
+                    className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500 bg-white"
+                  >
+                    <option value="ATIVO">Ativo</option>
+                    <option value="INATIVO">Inativo</option>
+                  </select>
+                </div>
+
+                {/* Fornecedor */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Fornecedor *
+                  </label>
+                  <input
+                    type="text"
+                    name="fornecedor"
+                    value={formData.fornecedor}
+                    onChange={handleInputChange}
+                    required
+                    className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+                    placeholder="Ex: Dell Brasil"
+                  />
+                </div>
+              </div>
+
+              {/* Botões */}
+              <div className="flex items-center justify-end gap-3 mt-6 pt-6 border-t border-gray-200">
+                <button
+                  type="button"
+                  onClick={() => setShowModal(false)}
+                  className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 font-medium transition-colors"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="submit"
+                  className="px-6 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg font-medium transition-colors"
+                >
+                  Salvar Produto
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
