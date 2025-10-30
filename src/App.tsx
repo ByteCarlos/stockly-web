@@ -27,16 +27,19 @@ function App() {
 
   return (
     <Router>
-      <Navbar onLogout={handleLogout} />
-      <div className="container">
-        <Routes>
-          <Route path="/" element={<Navigate to="/produtos" />} />
-          <Route path="/produtos" element={<Produtos token={token} />} />
-          <Route path="/categorias" element={<Categorias token={token} />} />
-          <Route path="/movimentacoes" element={<Movimentacoes token={token} />} />
-          <Route path="/relatorios" element={<Relatorios token={token} />} />
-        </Routes>
+      <div className="main">
+        <Navbar onLogout={handleLogout} />
+        <div className="container">
+          <Routes>
+            <Route path="/" element={<Navigate to="/produtos" />} />
+            <Route path="/produtos" element={<Produtos token={token} />} />
+            <Route path="/categorias" element={<Categorias token={token} />} />
+            <Route path="/movimentacoes" element={<Movimentacoes token={token} />} />
+            <Route path="/relatorios" element={<Relatorios token={token} />} />
+          </Routes>
+        </div>
       </div>
+      
     </Router>
   );
 }
