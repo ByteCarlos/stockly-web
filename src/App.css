@@ -2,20 +2,18 @@
 
 #root {
   font-family: 'Inter', sans-serif;
-  height: 100vh;
+  min-height: 100vh;
   width: 100vw;
 }
 
-.main{
-  height: 100%;
+.main {
+  min-height: 100vh;
   width: 100%;
-  display: inline-flex;
-
+  display: flex;
 }
 
 .container {
+  margin-left: 20%; /* Adicione isso para compensar o espaço da navbar fixa */
   width: 80%;
-  height: 100%;
-  padding: 1rem;
-  
+  /* Removido o height */
 }

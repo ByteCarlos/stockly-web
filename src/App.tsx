@@ -7,6 +7,7 @@ import Produtos from "./pages/Produtos/Produtos";
 import Categorias from "./pages/Categorias/Categorias";
 import Movimentacoes from "./pages/Movimentacoes/Movimentacoes";
 import Relatorios from "./pages/Relatorios/Relatorios";
+import Dashboard from "./pages/Dashboard/Dashboard";
 
 function App() {
   const [token, setToken] = useState<string | null>(localStorage.getItem("token"));
@@ -32,6 +33,7 @@ function App() {
         <div className="container">
           <Routes>
             <Route path="/" element={<Navigate to="/produtos" />} />
+            <Route path="/dashboard" element={<Dashboard token={token} />} />
             <Route path="/produtos" element={<Produtos token={token} />} />
             <Route path="/categorias" element={<Categorias token={token} />} />
             <Route path="/movimentacoes" element={<Movimentacoes token={token} />} />
