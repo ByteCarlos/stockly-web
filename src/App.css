@@ -1,5 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600&display=swap');
 
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden; /* **NOVO:** Impede a rolagem da página inteira */
+}
+
 #root {
   font-family: 'Inter', sans-serif;
   height: 100vh;
@@ -9,13 +16,14 @@
 .main{
   height: 100%;
   width: 100%;
-  display: inline-flex;
+  display: flex;
 
 }
 
 .container {
   width: 80%;
   height: 100%;
-  padding: 1rem;
+  flex-grow: 1; /* **NOVO:** Garante que ocupe todo o espaço horizontal restante */
+  overflow-y: auto; /* **NOVO E CRUCIAL:** Habilita a rolagem APENAS neste contêiner */
   
 }
