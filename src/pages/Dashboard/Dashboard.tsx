@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Package, FileText, AlertCircle, TrendingUp, Plus, BarChart3, X } from 'lucide-react';
+import Swal from 'sweetalert2'
 
 interface Product {
   id: number;
@@ -144,6 +145,14 @@ const Dashboard: React.FC<DashboardProps> = ({ token: _token }) => {
       preco: '',
       status: 'ATIVO',
       fornecedor: ''
+    });
+    Swal.fire({
+      title: "Produto salvo com sucesso!",
+      icon: "success",
+      draggable: true,
+      showConfirmButton: false,
+      showCloseButton: false,
+      timer: 2000
     });
   };
 
