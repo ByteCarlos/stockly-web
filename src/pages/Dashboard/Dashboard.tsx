@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Package, FileText, AlertCircle, TrendingUp, Plus, BarChart3, X } from 'lucide-react';
 import Swal from 'sweetalert2'
+import { Link } from 'react-router-dom';
 
 interface Product {
   id: number;
@@ -195,7 +196,7 @@ const Dashboard: React.FC<DashboardProps> = ({ token: _token }) => {
                 <Package className="w-6 h-6 text-blue-600" />
               </div>
             </div>
-            <a href="#" className="text-sm text-gray-500 hover:text-gray-700">Ver lista de produtos →</a>
+            <Link to="/produtos" className="text-sm text-gray-500 hover:text-gray-700">Ver lista de produtos →</Link>
           </div>
 
           <div className="bg-white rounded-lg shadow-sm p-6 border-t-4 border-green-500">
