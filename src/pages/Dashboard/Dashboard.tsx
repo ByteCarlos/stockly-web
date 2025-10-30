@@ -35,6 +35,7 @@ interface NovoProdutoForm {
   fornecedor: string;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const Dashboard: React.FC<DashboardProps> = ({ token: _token }) => {
   const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState<NovoProdutoForm>({
@@ -350,7 +351,7 @@ const Dashboard: React.FC<DashboardProps> = ({ token: _token }) => {
                     value={formData.nome}
                     onChange={handleInputChange}
                     required
-                    className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+                    className="w-full bg-white border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
                     placeholder="Ex: Notebook Dell Inspiron 15"
                   />
                 </div>
@@ -365,7 +366,7 @@ const Dashboard: React.FC<DashboardProps> = ({ token: _token }) => {
                     value={formData.descricao}
                     onChange={handleInputChange}
                     rows={3}
-                    className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+                    className="w-full border bg-white border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
                     placeholder="Descreva o produto..."
                   />
                 </div>
@@ -381,7 +382,7 @@ const Dashboard: React.FC<DashboardProps> = ({ token: _token }) => {
                     value={formData.sku}
                     onChange={handleInputChange}
                     required
-                    className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+                    className="w-full border bg-white border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
                     placeholder="Ex: NBK-DEL-001"
                   />
                 </div>
@@ -418,7 +419,7 @@ const Dashboard: React.FC<DashboardProps> = ({ token: _token }) => {
                     onChange={handleInputChange}
                     required
                     min="0"
-                    className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+                    className="w-full border bg-white border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
                     placeholder="0"
                   />
                 </div>
@@ -436,7 +437,7 @@ const Dashboard: React.FC<DashboardProps> = ({ token: _token }) => {
                     required
                     min="0"
                     step="0.01"
-                    className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+                    className="w-full border bg-white border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
                     placeholder="0,00"
                   />
                 </div>
@@ -469,7 +470,7 @@ const Dashboard: React.FC<DashboardProps> = ({ token: _token }) => {
                     value={formData.fornecedor}
                     onChange={handleInputChange}
                     required
-                    className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+                    className="w-full border bg-white border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
                     placeholder="Ex: Dell Brasil"
                   />
                 </div>
