@@ -4,7 +4,7 @@ html, body {
   margin: 0;
   padding: 0;
   height: 100%;
-  overflow: hidden; /* *NOVO:* Impede a rolagem da página inteira */
+  overflow: hidden; /* **NOVO:** Impede a rolagem da página inteira */
 }
 
 #root {
@@ -23,6 +23,7 @@ html, body {
 .container {
   width: 80%;
   height: 100%;
-  flex-grow: 1; /* *NOVO:* Garante que ocupe todo o espaço horizontal restante */
-  overflow-y: auto; /* *NOVO E CRUCIAL:* Habilita a rolagem APENAS neste contêiner */
+  flex-grow: 1; /* **NOVO:** Garante que ocupe todo o espaço horizontal restante */
+  overflow-y: auto; /* **NOVO E CRUCIAL:** Habilita a rolagem APENAS neste contêiner */
+  
 }
