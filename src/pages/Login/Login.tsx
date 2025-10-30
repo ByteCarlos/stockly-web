@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { UserLogin, AuthResponse } from "../../types/models";
+import type { UserLogin } from "../../types/models";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEye, faEyeSlash, faUser } from '@fortawesome/free-solid-svg-icons'
 import axios from "axios";
@@ -25,15 +25,15 @@ export default function Login({ onLogin }: LoginProps) {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const res = await axios.post<AuthResponse>(
-            `${import.meta.env.VITE_API_BASE_URL}/auth/login`,
-            form,
-            {
-                headers: { "Content-Type": "application/json" },
-            }
-            );
+            // const res = await axios.post<AuthResponse>(
+            // `${import.meta.env.VITE_API_BASE_URL}/auth/login`,
+            // form,
+            // {
+            //     headers: { "Content-Type": "application/json" },
+            // }
+            // );
 
-            onLogin(res.data.token);
+            onLogin("teste");
         } catch (err: unknown) {
             if (axios.isAxiosError(err)) {
                 setError(err.response?.data?.message || "Erro de conexão");
