@@ -32,7 +32,7 @@ function App() {
         <Navbar onLogout={handleLogout} />
         <div className="container">
           <Routes>
-            <Route path="/" element={<Navigate to="/produtos" />} />
+            <Route path="/" element={<Navigate to="/dashboard" />} />
             <Route path="/dashboard" element={<Dashboard token={token} />} />
             <Route path="/produtos" element={<Produtos token={token} />} />
             <Route path="/categorias" element={<Categorias token={token} />} />
