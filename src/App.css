@@ -25,5 +25,5 @@ html, body {
   height: 100%;
   flex-grow: 1; /* **NOVO:** Garante que ocupe todo o espaço horizontal restante */
   overflow-y: auto; /* **NOVO E CRUCIAL:** Habilita a rolagem APENAS neste contêiner */
-
+  
 }
