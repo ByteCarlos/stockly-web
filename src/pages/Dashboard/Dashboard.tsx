@@ -260,7 +260,6 @@ const Dashboard: React.FC<DashboardProps> = ({ token: _token }) => {
                     </td>
                     <td className="py-4 px-4">
                       <span className={`inline-block px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(product.status)}`}>
-                        {product.status}
                       </span>
                     </td>
                     <td className="py-4 px-4 text-sm text-gray-600">{product.lastUpdate}</td>
