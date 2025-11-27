@@ -3,7 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import {
   LayoutDashboard,
   Package,
-  Folder,
+  //Folder,
   Truck,
   ArrowDownCircle,
   ArrowUpCircle,
@@ -27,7 +27,7 @@ export default function Navbar({ onLogout }: NavbarProps) {
       items: [
         { to: "/dashboard", label: "Dashboard", icon: <LayoutDashboard size={18} /> },
         { to: "/produtos", label: "Produtos", icon: <Package size={18} /> },
-        { to: "/categorias", label: "Categorias", icon: <Folder size={18} /> },
+        //{ to: "/categorias", label: "Categorias", icon: <Folder size={18} /> },
         { to: "/Fornecedores", label: "Fornecedores", icon: <Truck size={18} /> },
       ],
     },

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Package, FileText, AlertCircle, TrendingUp, Plus, BarChart3, X } from 'lucide-react';
 import Swal from 'sweetalert2'
 import { Link } from 'react-router-dom';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 interface Product {
   id: number;
@@ -50,6 +51,17 @@ const Dashboard: React.FC<DashboardProps> = ({ token: _token }) => {
     status: 'ATIVO',
     fornecedor: ''
   });
+
+  // Dados para o gráfico de movimentações
+  const chartData = [
+    { dia: 'Seg', entradas: 45, saidas: 32 },
+    { dia: 'Ter', entradas: 38, saidas: 41 },
+    { dia: 'Qua', entradas: 52, saidas: 28 },
+    { dia: 'Qui', entradas: 61, saidas: 45 },
+    { dia: 'Sex', entradas: 48, saidas: 38 },
+    { dia: 'Sáb', entradas: 35, saidas: 22 },
+    { dia: 'Dom', entradas: 28, saidas: 15 },
+  ];
 
   const [products] = useState<Product[]>([
     {
@@ -242,16 +254,48 @@ const Dashboard: React.FC<DashboardProps> = ({ token: _token }) => {
 
         {/* Content Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-          {/* Chart Placeholder */}
+          {/* Chart */}
           <div className="lg:col-span-2 bg-white rounded-lg shadow-sm p-6">
             <h2 className="text-lg font-semibold text-gray-800 mb-4">Movimentações dos Últimos 7 Dias</h2>
-            <div className="flex items-center justify-center h-64 bg-gray-50 rounded-lg">
-              <div className="text-center">
-                <BarChart3 className="w-16 h-16 text-gray-300 mx-auto mb-2" />
-                <p className="text-gray-500 font-medium">Gráfico de movimentações</p>
-                <p className="text-sm text-gray-400">Entradas vs Saídas</p>
-              </div>
-            </div>
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart data={chartData}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                <XAxis 
+                  dataKey="dia" 
+                  tick={{ fill: '#6b7280', fontSize: 12 }}
+                  axisLine={{ stroke: '#e5e7eb' }}
+                />
+                <YAxis 
+                  tick={{ fill: '#6b7280', fontSize: 12 }}
+                  axisLine={{ stroke: '#e5e7eb' }}
+                />
+                <Tooltip 
+                  contentStyle={{ 
+                    backgroundColor: '#fff',
+                    border: '1px solid #e5e7eb',
+                    borderRadius: '8px',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+                  }}
+                  labelStyle={{ color: '#374151', fontWeight: 600 }}
+                />
+                <Legend 
+                  wrapperStyle={{ paddingTop: '20px' }}
+                  iconType="circle"
+                />
+                <Bar 
+                  dataKey="entradas" 
+                  fill="#23C55E" 
+                  name="Entradas"
+                  radius={[8, 8, 0, 0]}
+                />
+                <Bar 
+                  dataKey="saidas" 
+                  fill="#ef4444" 
+                  name="Saídas"
+                  radius={[8, 8, 0, 0]}
+                />
+              </BarChart>
+            </ResponsiveContainer>
           </div>
 
           {/* Stock Alerts */}
