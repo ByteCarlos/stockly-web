@@ -42,7 +42,7 @@ export default function Navbar({ onLogout }: NavbarProps) {
       section: "ADMINISTRAÇÃO",
       items: [
         { to: "/usuarios", label: "Usuários", icon: <Users size={18} /> },
-        { to: "/logs", label: "Logs de Atividades", icon: <FileText size={18} /> },
+        //{ to: "/logs", label: "Logs de Atividades", icon: <FileText size={18} /> },
       ],
     },
   ];

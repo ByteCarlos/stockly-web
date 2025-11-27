@@ -11,6 +11,7 @@ import Dashboard from "./pages/Dashboard/Dashboard";
 import Entradas from "./pages/Entradas/Entradas";
 import Saidas from "./pages/Saidas/Saidas";
 import Usuarios from "./pages/Usuarios/Usuarios";
+import Configuracoes from "./pages/Configuracoes/Configuracoes";
 
 function App() {
   const [token, setToken] = useState<string | null>(localStorage.getItem("token"));
@@ -39,11 +40,12 @@ function App() {
             <Route path="/dashboard" element={<Dashboard token={token} />} />
             <Route path="/produtos" element={<Produtos token={token} />} />
             {/*<Route path="/categorias" element={<Categorias token={token} />} />*/}
-            <Route path="/fornecedores" element={<Fornecedores token={token} />} /> {/* Adicione esta linha */}
+            <Route path="/fornecedores" element={<Fornecedores token={token} />} />
             <Route path="/movimentacoes" element={<Movimentacoes token={token} />} />
             <Route path="/entradas" element={<Entradas token={token} />} />
             <Route path="/saidas" element={<Saidas token={token} />} />
-            <Route path="/Usuarios" element={<Usuarios token={token} />} />
+            <Route path="/usuarios" element={<Usuarios/>} />
+            <Route path="/configuracoes" element={<Configuracoes token={token} />} />
           </Routes>
         </div>
       </div>
