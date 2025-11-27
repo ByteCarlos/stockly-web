@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Plus, Upload, Download, Edit, Trash2, Eye, Phone, Mail, Building2 } from "lucide-react";
+import { Plus, Edit, Trash2, Eye, Phone, Mail, Building2 } from "lucide-react";
 
 interface FornecedoresProps {
   token: string;
@@ -143,10 +143,76 @@ export default function Fornecedores({ token: _token }: FornecedoresProps) {
     },
   ]);
 
+  const [showModal, setShowModal] = useState(false);
+
+  // CORREÇÃO 1: Declaração do estado do formulário (formData)
+  const [formData, setFormData] = useState<Fornecedor>({
+    id: 0,
+    nome: '',
+    cnpj: '',
+    razaoSocial: '',
+    email: '',
+    telefone: '',
+    celular: '',
+    endereco: '',
+    cidade: '',
+    estado: '',
+    cep: '',
+    nomeContato: '',
+    cargoContato: '',
+    categorias: [],
+    status: "ATIVO",
+    prazoEntrega: '',
+    condicaoPagamento: '',
+  });
+
   const totalFornecedores = fornecedores.length;
   const ativos = fornecedores.filter((f) => f.status === "ATIVO").length;
   const inativos = fornecedores.filter((f) => f.status === "INATIVO").length;
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+
+    // Lógica específica para o campo 'categorias', convertendo string para array
+    if (name === 'categorias') {
+      const categoriesArray = value.split(',').map(cat => cat.trim()).filter(cat => cat.length > 0);
+      setFormData(prev => ({ ...prev, [name]: categoriesArray }));
+    } else {
+      setFormData(prev => ({ ...prev, [name]: value }));
+    }
+  };
+
+  const handleSubmit = () => {
+    console.log('Novo Fornecedor:', formData);
+    // Aqui você faria a requisição para a API com o token
+    setShowModal(false);
+    
+    // CORREÇÃO 2: Limpar formulário com os campos corretos
+    setFormData({
+      id: 0,
+      nome: '',
+      cnpj: '',
+      razaoSocial: '',
+      email: '',
+      telefone: '',
+      celular: '',
+      endereco: '',
+      cidade: '',
+      estado: '',
+      cep: '',
+      nomeContato: '',
+      cargoContato: '',
+      categorias: [],
+      status: 'ATIVO',
+      prazoEntrega: '',
+      condicaoPagamento: '',
+    });
+    
+    // Simulando notificação de sucesso
+    alert('Fornecedor salvo com sucesso!');
+  }; // CORREÇÃO ESTRUTURAL: Fechar handleSubmit aqui
+
+  // CORREÇÃO ESTRUTURAL: Início do return do componente
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="w-full p-6">
@@ -157,15 +223,10 @@ export default function Fornecedores({ token: _token }: FornecedoresProps) {
             <p className="text-gray-600">Gerencie seus fornecedores e contatos</p>
           </div>
           <div className="flex items-center gap-3">
-            <button className="flex items-center gap-2 bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-lg font-medium transition-colors">
-              <Download size={16} />
-              Exportar
-            </button>
-            <button className="flex items-center gap-2 bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-lg font-medium transition-colors">
-              <Upload size={16} />
-              Importar
-            </button>
-            <button className="flex items-center gap-2 bg-[#23C55E] hover:bg-[#1fa04e] text-white px-4 py-2 rounded-lg font-medium transition-colors">
+            <button 
+              onClick={() => setShowModal(true)}
+              className="flex items-center gap-2 bg-[#23C55E] hover:bg-[#1fa04e] text-white px-4 py-2 rounded-lg font-medium transition-colors"
+            >
               <Plus size={16} />
               Novo Fornecedor
             </button>
@@ -353,6 +414,287 @@ export default function Fornecedores({ token: _token }: FornecedoresProps) {
             </div>
           ))}
         </div>
+
+        {/* Modal Novo Fornecedor */}
+        {showModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+              {/* Header do Modal */}
+              <div className="p-6 border-b border-gray-200">
+                <div className="flex items-center justify-between">
+                  <h2 className="text-2xl font-bold text-black">Novo Fornecedor</h2>
+                  <button 
+                    onClick={() => setShowModal(false)}
+                    // CORREÇÃO: Ajuste de classes para o botão de fechar
+                    className="text-gray-500 hover:bg-gray-100 p-2 rounded-lg transition-colors" 
+                  >
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+              {/* Conteúdo do Modal */}
+              <div className="p-6 space-y-6">
+                {/* Informações Básicas */}
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-800 mb-4">Informações Básicas</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Nome do Fornecedor *
+                      </label>
+                      <input
+                        type="text"
+                        name="nome" // CORREÇÃO: Adicionado name
+                        value={formData.nome} // CORREÇÃO: Adicionado value
+                        onChange={handleInputChange} // CORREÇÃO: Adicionado onChange
+                        className="text-black bg-white w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#23C55E]"
+                        placeholder="Ex: Dell Brasil"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Razão Social *
+                      </label>
+                      <input
+                        type="text"
+                        name="razaoSocial" // CORREÇÃO: Adicionado name
+                        value={formData.razaoSocial} // CORREÇÃO: Adicionado value
+                        onChange={handleInputChange} // CORREÇÃO: Adicionado onChange
+                        className="text-black bg-white w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#23C55E]"
+                        placeholder="Ex: Dell Computadores do Brasil Ltda"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        CNPJ *
+                      </label>
+                      <input
+                        type="text"
+                        name="cnpj" // CORREÇÃO: Adicionado name
+                        value={formData.cnpj} // CORREÇÃO: Adicionado value
+                        onChange={handleInputChange} // CORREÇÃO: Adicionado onChange
+                        className="text-black bg-white w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#23C55E]"
+                        placeholder="00.000.000/0000-00"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Status
+                      </label>
+                      <select 
+                        name="status" // CORREÇÃO: Adicionado name
+                        value={formData.status} // CORREÇÃO: Adicionado value
+                        onChange={handleInputChange} // CORREÇÃO: Adicionado onChange
+                        className="text-black bg-white w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#23C55E]"
+                      >
+                        <option value="ATIVO">Ativo</option>
+                        <option value="INATIVO">Inativo</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Contato Principal */}
+                <div className="border-t pt-6">
+                  <h3 className="text-lg font-semibold text-gray-800 mb-4">Contato Principal</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Nome do Contato *
+                      </label>
+                      <input
+                        type="text"
+                        name="nomeContato" // CORREÇÃO: Adicionado name
+                        value={formData.nomeContato} // CORREÇÃO: Adicionado value
+                        onChange={handleInputChange} // CORREÇÃO: Adicionado onChange
+                        className="text-black bg-white w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#23C55E]"
+                        placeholder="Ex: Carlos Silva"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Cargo
+                      </label>
+                      <input
+                        type="text"
+                        name="cargoContato" // CORREÇÃO: Adicionado name
+                        value={formData.cargoContato} // CORREÇÃO: Adicionado value
+                        onChange={handleInputChange} // CORREÇÃO: Adicionado onChange
+                        className="text-black bg-white w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#23C55E]"
+                        placeholder="Ex: Gerente Comercial"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        E-mail *
+                      </label>
+                      <input
+                        type="email"
+                        name="email" // CORREÇÃO: Adicionado name
+                        value={formData.email} // CORREÇÃO: Adicionado value
+                        onChange={handleInputChange} // CORREÇÃO: Adicionado onChange
+                        className="text-black bg-white w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#23C55E]"
+                        placeholder="contato@empresa.com.br"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Telefone
+                      </label>
+                      <input
+                        type="text"
+                        name="telefone" // CORREÇÃO: Adicionado name
+                        value={formData.telefone} // CORREÇÃO: Adicionado value
+                        onChange={handleInputChange} // CORREÇÃO: Adicionado onChange
+                        className="text-black bg-white w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#23C55E]"
+                        placeholder="(00) 0000-0000"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Celular
+                      </label>
+                      <input
+                        type="text"
+                        name="celular" // CORREÇÃO: Adicionado name
+                        value={formData.celular} // CORREÇÃO: Adicionado value
+                        onChange={handleInputChange} // CORREÇÃO: Adicionado onChange
+                        className="text-black bg-white w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#23C55E]"
+                        placeholder="(00) 00000-0000"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Endereço */}
+                <div className="border-t pt-6">
+                  <h3 className="text-lg font-semibold text-gray-800 mb-4">Endereço</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="md:col-span-2">
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Endereço
+                      </label>
+                      <input
+                        type="text"
+                        name="endereco" // CORREÇÃO: Adicionado name
+                        value={formData.endereco} // CORREÇÃO: Adicionado value
+                        onChange={handleInputChange} // CORREÇÃO: Adicionado onChange
+                        className="text-black bg-white w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#23C55E]"
+                        placeholder="Ex: Av. Industrial Belgraf, 400"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Cidade
+                      </label>
+                      <input
+                        type="text"
+                        name="cidade" // CORREÇÃO: Adicionado name
+                        value={formData.cidade} // CORREÇÃO: Adicionado value
+                        onChange={handleInputChange} // CORREÇÃO: Adicionado onChange
+                        className="text-black bg-white w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#23C55E]"
+                        placeholder="Ex: São Paulo"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Estado
+                      </label>
+                      <input
+                        type="text"
+                        name="estado" // CORREÇÃO: Adicionado name
+                        value={formData.estado} // CORREÇÃO: Adicionado value
+                        onChange={handleInputChange} // CORREÇÃO: Adicionado onChange
+                        className="text-black bg-white w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#23C55E]"
+                        placeholder="Ex: SP"
+                        maxLength={2}
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        CEP
+                      </label>
+                      <input
+                        type="text"
+                        name="cep" // CORREÇÃO: Adicionado name
+                        value={formData.cep} // CORREÇÃO: Adicionado value
+                        onChange={handleInputChange} // CORREÇÃO: Adicionado onChange
+                        className="text-black bg-white w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#23C55E]"
+                        placeholder="00000-000"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Condições Comerciais */}
+                <div className="border-t pt-6">
+                  <h3 className="text-lg font-semibold text-gray-800 mb-4">Condições Comerciais</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Prazo de Entrega
+                      </label>
+                      <input
+                        type="text"
+                        name="prazoEntrega" // CORREÇÃO: Adicionado name
+                        value={formData.prazoEntrega} // CORREÇÃO: Adicionado value
+                        onChange={handleInputChange} // CORREÇÃO: Adicionado onChange
+                        className="text-black bg-white w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#23C55E]"
+                        placeholder="Ex: 15 dias"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Condição de Pagamento
+                      </label>
+                      <input
+                        type="text"
+                        name="condicaoPagamento" // CORREÇÃO: Adicionado name
+                        value={formData.condicaoPagamento} // CORREÇÃO: Adicionado value
+                        onChange={handleInputChange} // CORREÇÃO: Adicionado onChange
+                        className="text-black bg-white w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#23C55E]"
+                        placeholder="Ex: 30/60 dias"
+                      />
+                    </div>
+                    <div className="md:col-span-2">
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Categorias
+                      </label>
+                      <input
+                        type="text"
+                        name="categorias" // CORREÇÃO: Adicionado name
+                        // O valor aqui será a string unida por vírgulas para edição
+                        value={formData.categorias.join(', ')} 
+                        onChange={handleInputChange} // CORREÇÃO: Adicionado onChange
+                        className="text-black bg-white w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#23C55E]"
+                        placeholder="Ex: Eletrônicos, Notebooks (separadas por vírgula)"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Footer do Modal */}
+              <div className="bg-gray-50 p-6 flex items-center justify-end gap-3 sticky bottom-0">
+                <button
+                  onClick={() => setShowModal(false)}
+                  className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-100 transition-colors"
+                >
+                  Cancelar
+                </button>
+                <button
+                  onClick={handleSubmit} // CORREÇÃO 3: Adicionado o handler de submissão
+                  className="px-6 py-2 bg-[#23C55E] hover:bg-[#1fa04e] text-white rounded-lg font-medium transition-colors"
+                >
+                  Salvar Fornecedor
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -18,11 +18,29 @@ interface Saida {
   notaFiscal: string;
 }
 
+// Interface para o estado inicial do formulário (FormData)
+interface NewSaidaFormData {
+  cliente: string;
+  produto: string;
+  quantidade: number | string;
+  valorUnitario: number | string;
+  notaFiscal: string;
+}
+
 export default function Saidas({ token: _token }: SaidasProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('todos');
   const [clienteFilter, setClienteFilter] = useState('todos');
   const [showNewSaida, setShowNewSaida] = useState(false);
+
+  // Estado para o formulário de nova saída (inicializado com valores vazios/default)
+  const [formData, setFormData] = useState<NewSaidaFormData>({
+    cliente: '',
+    produto: '',
+    quantidade: '', // Usando string para refletir o input type="number" (que retorna string) ou vazio
+    valorUnitario: '', // Usando string para refletir o input type="text" ou vazio
+    notaFiscal: '',
+  });
 
   const [saidas] = useState<Saida[]>([
     {
@@ -92,6 +110,34 @@ export default function Saidas({ token: _token }: SaidasProps) {
   const valorTotalMes = 189320.50;
   const mediaDiaria = 5.4;
 
+  // Handler genérico para atualizar o estado do formulário
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  // Handler de submissão do formulário (NOVA FUNÇÃO ADICIONADA)
+  const handleSubmit = () => {
+    console.log('Nova Saída Registrada:', formData);
+    
+    // Simulação de requisição à API
+    // ... Lógica para calcular valorTotal e salvar a nova Saída ...
+    
+    setShowNewSaida(false); // Fecha o modal
+    
+    // Resetar o formulário
+    setFormData({
+      cliente: '',
+      produto: '',
+      quantidade: '',
+      valorUnitario: '',
+      notaFiscal: '',
+    });
+
+    // Adiciona o alerta de sucesso na tela de entrada
+    alert('Saída salva com sucesso!');
+  };
+
   const getStatusColor = (status: string) => {
     switch(status) {
       case 'concluida': return 'bg-green-100 text-green-700';
@@ -138,7 +184,17 @@ export default function Saidas({ token: _token }: SaidasProps) {
               Importar
             </button>
             <button 
-              onClick={() => setShowNewSaida(true)}
+              onClick={() => {
+                setShowNewSaida(true);
+                // Opcional: Limpar o form ao abrir, caso o estado não esteja limpo
+                setFormData({
+                  cliente: '',
+                  produto: '',
+                  quantidade: '',
+                  valorUnitario: '',
+                  notaFiscal: '',
+                });
+              }}
               className="flex items-center gap-2 bg-[#23C55E] hover:bg-[#1fa04e] text-white px-4 py-2 rounded-lg font-medium transition-colors"
             >
               <Plus size={16} />
@@ -325,22 +381,32 @@ export default function Saidas({ token: _token }: SaidasProps) {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Cliente</label>
-                  <select className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#23C55E]">
-                    <option>Selecione um cliente</option>
-                    <option>Tech Solutions Ltda</option>
-                    <option>Empresa ABC</option>
-                    <option>Distribuidora XYZ</option>
-                    <option>Varejo Digital</option>
+                  <select 
+                    name="cliente" // Adicionado name
+                    value={formData.cliente} // Adicionado value
+                    onChange={handleInputChange} // Adicionado onChange
+                    className="text-black bg-white w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#23C55E]"
+                  >
+                    <option value="">Selecione um cliente</option>
+                    <option value="Tech Solutions Ltda">Tech Solutions Ltda</option>
+                    <option value="Empresa ABC">Empresa ABC</option>
+                    <option value="Distribuidora XYZ">Distribuidora XYZ</option>
+                    <option value="Varejo Digital">Varejo Digital</option>
                   </select>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Produto</label>
-                  <select className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#23C55E]">
-                    <option>Selecione um produto</option>
-                    <option>Notebook Dell Inspiron 15</option>
-                    <option>Mouse Logitech MX Master</option>
-                    <option>Teclado Mecânico Corsair K95</option>
-                    <option>Monitor LG 24" Full HD</option>
+                  <select 
+                    name="produto" // Adicionado name
+                    value={formData.produto} // Adicionado value
+                    onChange={handleInputChange} // Adicionado onChange
+                    className="text-black bg-white w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#23C55E]"
+                  >
+                    <option value="">Selecione um produto</option>
+                    <option value="Notebook Dell Inspiron 15">Notebook Dell Inspiron 15</option>
+                    <option value="Mouse Logitech MX Master">Mouse Logitech MX Master</option>
+                    <option value="Teclado Mecânico Corsair K95">Teclado Mecânico Corsair K95</option>
+                    <option value="Monitor LG 24&quot; Full HD">Monitor LG 24" Full HD</option>
                   </select>
                 </div>
               </div>
@@ -349,14 +415,20 @@ export default function Saidas({ token: _token }: SaidasProps) {
                   <label className="block text-sm font-medium text-gray-700 mb-2">Quantidade</label>
                   <input 
                     type="number" 
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#23C55E]" 
+                    name="quantidade" // Adicionado name
+                    value={formData.quantidade} // Adicionado value
+                    onChange={handleInputChange} // Adicionado onChange
+                    className="text-black bg-white w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#23C55E]" 
                   />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Valor Unitário</label>
                   <input 
                     type="text" 
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#23C55E]" 
+                    name="valorUnitario" // Adicionado name
+                    value={formData.valorUnitario} // Adicionado value
+                    onChange={handleInputChange} // Adicionado onChange
+                    className="text-black bg-white w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#23C55E]" 
                   />
                 </div>
               </div>
@@ -364,17 +436,23 @@ export default function Saidas({ token: _token }: SaidasProps) {
                 <label className="block text-sm font-medium text-gray-700 mb-2">Nota Fiscal</label>
                 <input 
                   type="text" 
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#23C55E]" 
+                  name="notaFiscal" // Adicionado name
+                  value={formData.notaFiscal} // Adicionado value
+                  onChange={handleInputChange} // Adicionado onChange
+                  className="text-black bg-white w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#23C55E]" 
                 />
               </div>
               <div className="flex gap-4 mt-6">
                 <button 
                   onClick={() => setShowNewSaida(false)}
-                  className="flex-1 px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                  className="text-red-600 bg-red-200 flex-1 px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
                 >
-                  Cancelar
+                  CANCELAR
                 </button>
-                <button className="flex-1 px-6 py-2 bg-[#23C55E] text-white rounded-lg hover:bg-[#1fa04e] transition-colors">
+                <button 
+                  onClick={handleSubmit} // Chamada para a nova função de submissão
+                  className="flex-1 px-6 py-2 bg-[#23C55E] text-white rounded-lg hover:bg-[#1fa04e] transition-colors"
+                >
                   Salvar Saída
                 </button>
               </div>

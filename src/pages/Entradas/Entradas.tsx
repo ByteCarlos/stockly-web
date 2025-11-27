@@ -18,11 +18,29 @@ interface Entrada {
   notaFiscal: string;
 }
 
+// Interface para o estado inicial do formulário (FormData)
+interface NewEntradaFormData {
+  cliente: string;
+  produto: string;
+  quantidade: number | string;
+  valorUnitario: number | string;
+  notaFiscal: string;
+}
+
 export default function Entradas({ token: _token }: EntradasProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('todos');
   const [fornecedorFilter, setFornecedorFilter] = useState('todos');
   const [showNewEntrada, setShowNewEntrada] = useState(false);
+
+  // Estado para o formulário de nova saída (inicializado com valores vazios/default)
+  const [formData, setFormData] = useState<NewEntradaFormData>({
+    cliente: '',
+    produto: '',
+    quantidade: '', // Usando string para refletir o input type="number" (que retorna string) ou vazio
+    valorUnitario: '', // Usando string para refletir o input type="text" ou vazio
+    notaFiscal: '',
+  });
 
   const [entradas] = useState<Entrada[]>([
     {
@@ -118,6 +136,35 @@ export default function Entradas({ token: _token }: EntradasProps) {
     const matchFornecedor = fornecedorFilter === 'todos' || entrada.fornecedor === fornecedorFilter;
     return matchSearch && matchStatus && matchFornecedor;
   });
+
+  
+  // Handler genérico para atualizar o estado do formulário
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  // Handler de submissão do formulário (NOVA FUNÇÃO ADICIONADA)
+  const handleSubmit = () => {
+    console.log('Nova Entrada Registrada:', formData);
+    
+    // Simulação de requisição à API
+    // ... Lógica para calcular valorTotal e salvar a nova Saída ...
+    
+    setShowNewEntrada(false); // Fecha o modal
+    
+    // Resetar o formulário
+    setFormData({
+      cliente: '',
+      produto: '',
+      quantidade: '',
+      valorUnitario: '',
+      notaFiscal: '',
+    });
+
+    // Adiciona o alerta de sucesso na tela de entrada
+    alert('Entrada salva com sucesso!');
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -325,7 +372,7 @@ export default function Entradas({ token: _token }: EntradasProps) {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Fornecedor</label>
-                  <select className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#23C55E]">
+                  <select className="text-black bg-white w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#23C55E]">
                     <option>Selecione um fornecedor</option>
                     <option>Dell Brasil</option>
                     <option>Logitech</option>
@@ -335,7 +382,7 @@ export default function Entradas({ token: _token }: EntradasProps) {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Produto</label>
-                  <select className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#23C55E]">
+                  <select className="text-black bg-white w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#23C55E]">
                     <option>Selecione um produto</option>
                     <option>Notebook Dell Inspiron 15</option>
                     <option>Mouse Logitech MX Master</option>
@@ -347,14 +394,14 @@ export default function Entradas({ token: _token }: EntradasProps) {
                   <label className="block text-sm font-medium text-gray-700 mb-2">Quantidade</label>
                   <input 
                     type="number" 
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#23C55E]" 
+                    className="text-black bg-white w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#23C55E]" 
                   />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Valor Unitário</label>
                   <input 
                     type="text" 
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#23C55E]" 
+                    className=" text-black bg-white w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#23C55E]" 
                   />
                 </div>
               </div>
@@ -362,17 +409,19 @@ export default function Entradas({ token: _token }: EntradasProps) {
                 <label className="block text-sm font-medium text-gray-700 mb-2">Nota Fiscal</label>
                 <input 
                   type="text" 
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#23C55E]" 
+                  className="text-black bg-white w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#23C55E]" 
                 />
               </div>
               <div className="flex gap-4 mt-6">
                 <button 
                   onClick={() => setShowNewEntrada(false)}
-                  className="flex-1 px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                  className="text-red-600 bg-red-200 flex-1 px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
                 >
-                  Cancelar
+                  CANCELAR
                 </button>
-                <button className="flex-1 px-6 py-2 bg-[#23C55E] text-white rounded-lg hover:bg-[#1fa04e] transition-colors">
+                <button 
+                onClick={handleSubmit}
+                className="flex-1 px-6 py-2 bg-[#23C55E] text-white rounded-lg hover:bg-[#1fa04e] transition-colors">
                   Salvar Entrada
                 </button>
               </div>

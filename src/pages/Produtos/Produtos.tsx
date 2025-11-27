@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Plus, Upload, Download, Edit, Trash2, Eye, Package } from "lucide-react";
+import { Plus, Upload, Download, Edit, Trash2, Eye, Package, X } from "lucide-react";
 
 interface ProdutosProps {
   token: string;
@@ -17,7 +17,30 @@ interface Produto {
   fornecedor: string;
 }
 
+interface NovoProdutoForm {
+  nome: string;
+  descricao: string;
+  sku: string;
+  categoria: string;
+  estoque: string;
+  preco: string;
+  status: string;
+  fornecedor: string;
+}
+
 export default function Produtos({ token: _token }: ProdutosProps) {
+  const [showModal, setShowModal] = useState(false);
+  const [formData, setFormData] = useState<NovoProdutoForm>({
+    nome: '',
+    descricao: '',
+    sku: '',
+    categoria: '',
+    estoque: '',
+    preco: '',
+    status: 'ATIVO',
+    fornecedor: ''
+  });
+
   const [produtos] = useState<Produto[]>([
     {
       id: 1,
@@ -75,6 +98,31 @@ export default function Produtos({ token: _token }: ProdutosProps) {
     return { label: "NORMAL", class: "bg-green-100 text-green-700" };
   };
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = () => {
+    console.log('Novo produto:', formData);
+    // Aqui você faria a requisição para a API com o token
+    setShowModal(false);
+    // Limpar formulário
+    setFormData({
+      nome: '',
+      descricao: '',
+      sku: '',
+      categoria: '',
+      estoque: '',
+      preco: '',
+      status: 'ATIVO',
+      fornecedor: ''
+    });
+    
+    // Simulando notificação de sucesso
+    alert('Produto salvo com sucesso!');
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="w-full p-6">
@@ -93,7 +141,10 @@ export default function Produtos({ token: _token }: ProdutosProps) {
               <Upload size={16} />
               Importar
             </button>
-            <button className="flex items-center gap-2 bg-[#23C55E] hover:bg-[#1fa04e] text-white px-4 py-2 rounded-lg font-medium transition-colors">
+            <button 
+              onClick={() => setShowModal(true)}
+              className="flex items-center gap-2 bg-[#23C55E] hover:bg-[#1fa04e] text-white px-4 py-2 rounded-lg font-medium transition-colors"
+            >
               <Plus size={16} />
               Novo Produto
             </button>
@@ -257,6 +308,175 @@ export default function Produtos({ token: _token }: ProdutosProps) {
           </div>
         </div>
       </div>
+
+      {/* Modal Novo Produto */}
+      {showModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            {/* Header do Modal */}
+            <div className="flex items-center justify-between p-6 border-b border-gray-200">
+              <h2 className="text-2xl font-bold text-gray-800">Novo Produto</h2>
+              <button
+                onClick={() => setShowModal(false)}
+                className="text-gray-400 hover:text-gray-600 transition-colors"
+              >
+                <X size={24} />
+              </button>
+            </div>
+
+            {/* Formulário */}
+            <div className="p-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* Nome do Produto */}
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Nome do Produto *
+                  </label>
+                  <input
+                    type="text"
+                    name="nome"
+                    value={formData.nome}
+                    onChange={handleInputChange}
+                    className="w-full text-black bg-white border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+                    placeholder="Ex: Notebook Dell Inspiron 15"
+                  />
+                </div>
+
+                {/* Descrição */}
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Descrição do Produto
+                  </label>
+                  <textarea
+                    name="descricao"
+                    value={formData.descricao}
+                    onChange={handleInputChange}
+                    rows={3}
+                    className="w-full border text-black bg-white border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+                    placeholder="Descreva o produto..."
+                  />
+                </div>
+
+                {/* SKU */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    SKU *
+                  </label>
+                  <input
+                    type="text"
+                    name="sku"
+                    value={formData.sku}
+                    onChange={handleInputChange}
+                    className="w-full border text-black bg-white border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+                    placeholder="Ex: NBK-DEL-001"
+                  />
+                </div>
+
+                {/* Categoria */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Categoria *
+                  </label>
+                  <select
+                    name="categoria"
+                    value={formData.categoria}
+                    onChange={handleInputChange}
+                    className="w-full border text-black border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500 bg-white"
+                  >
+                    <option value="">Selecione...</option>
+                    <option value="Eletrônicos">Eletrônicos</option>
+                    <option value="Periféricos">Periféricos</option>
+                    <option value="Monitores">Monitores</option>
+                    <option value="Acessórios">Acessórios</option>
+                  </select>
+                </div>
+
+                {/* Estoque */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Estoque *
+                  </label>
+                  <input
+                    type="number"
+                    name="estoque"
+                    value={formData.estoque}
+                    onChange={handleInputChange}
+                    min="0"
+                    className="w-full border text-black bg-white border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+                    placeholder="0"
+                  />
+                </div>
+
+                {/* Preço */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Preço (R$) *
+                  </label>
+                  <input
+                    type="number"
+                    name="preco"
+                    value={formData.preco}
+                    onChange={handleInputChange}
+                    min="0"
+                    step="0.01"
+                    className="w-full border text-black bg-white border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+                    placeholder="0,00"
+                  />
+                </div>
+
+                {/* Status */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Status *
+                  </label>
+                  <select
+                    name="status"
+                    value={formData.status}
+                    onChange={handleInputChange}
+                    className="w-full border text-black border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500 bg-white"
+                  >
+                    <option value="ATIVO">Ativo</option>
+                    <option value="INATIVO">Inativo</option>
+                  </select>
+                </div>
+
+                {/* Fornecedor */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Fornecedor *
+                  </label>
+                  <input
+                    type="text"
+                    name="fornecedor"
+                    value={formData.fornecedor}
+                    onChange={handleInputChange}
+                    className="w-full border text-black bg-white border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+                    placeholder="Ex: Dell Brasil"
+                  />
+                </div>
+              </div>
+
+              {/* Botões */}
+              <div className="flex items-center justify-end gap-3 mt-6 pt-6 border-t border-gray-200">
+                <button
+                  type="button"
+                  onClick={() => setShowModal(false)}
+                  className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 font-medium transition-colors"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="button"
+                  onClick={handleSubmit}
+                  className="px-6 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg font-medium transition-colors"
+                >
+                  Salvar Produto
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
