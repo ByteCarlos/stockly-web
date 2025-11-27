@@ -137,13 +137,6 @@ export default function Entradas({ token: _token }: EntradasProps) {
     return matchSearch && matchStatus && matchFornecedor;
   });
 
-  
-  // Handler genérico para atualizar o estado do formulário
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
-
   // Handler de submissão do formulário (NOVA FUNÇÃO ADICIONADA)
   const handleSubmit = () => {
     console.log('Nova Entrada Registrada:', formData);

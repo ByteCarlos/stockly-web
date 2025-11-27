@@ -8,7 +8,6 @@ import {
   ArrowDownCircle,
   ArrowUpCircle,
   Users,
-  FileText,
   Settings,
   LogOut,
 } from "lucide-react";

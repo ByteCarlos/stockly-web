@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Search, Download, Upload, Plus, Eye, Edit, Trash2, User, Shield, X } from 'lucide-react';
 
 type RoleType = 'Administrador' | 'Gerente' | 'Operador' | 'Visualizador';
