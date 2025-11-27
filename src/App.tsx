@@ -9,6 +9,8 @@ import Movimentacoes from "./pages/Movimentacoes/Movimentacoes";
 import Fornecedores from "./pages/Fornecedores/Fornecedores"; 
 import Dashboard from "./pages/Dashboard/Dashboard";
 import Entradas from "./pages/Entradas/Entradas";
+import Saidas from "./pages/Saidas/Saidas";
+import Usuarios from "./pages/Usuarios/Usuarios";
 
 function App() {
   const [token, setToken] = useState<string | null>(localStorage.getItem("token"));
@@ -40,6 +42,8 @@ function App() {
             <Route path="/fornecedores" element={<Fornecedores token={token} />} /> {/* Adicione esta linha */}
             <Route path="/movimentacoes" element={<Movimentacoes token={token} />} />
             <Route path="/entradas" element={<Entradas token={token} />} />
+            <Route path="/saidas" element={<Saidas token={token} />} />
+            <Route path="/Usuarios" element={<Usuarios token={token} />} />
           </Routes>
         </div>
       </div>
