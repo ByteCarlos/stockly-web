@@ -6,7 +6,7 @@ import Navbar from "./pages/Navbar/Navbar";
 import Produtos from "./pages/Produtos/Produtos";
 import Categorias from "./pages/Categorias/Categorias";
 import Movimentacoes from "./pages/Movimentacoes/Movimentacoes";
-import Relatorios from "./pages/Relatorios/Relatorios";
+import Fornecedores from "./pages/Fornecedores/Fornecedores"; 
 import Dashboard from "./pages/Dashboard/Dashboard";
 
 function App() {
@@ -36,8 +36,8 @@ function App() {
             <Route path="/dashboard" element={<Dashboard token={token} />} />
             <Route path="/produtos" element={<Produtos token={token} />} />
             <Route path="/categorias" element={<Categorias token={token} />} />
+            <Route path="/fornecedores" element={<Fornecedores token={token} />} /> {/* Adicione esta linha */}
             <Route path="/movimentacoes" element={<Movimentacoes token={token} />} />
-            <Route path="/relatorios" element={<Relatorios token={token} />} />
           </Routes>
         </div>
       </div>

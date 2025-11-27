@@ -28,7 +28,7 @@ export default function Navbar({ onLogout }: NavbarProps) {
         { to: "/dashboard", label: "Dashboard", icon: <LayoutDashboard size={18} /> },
         { to: "/produtos", label: "Produtos", icon: <Package size={18} /> },
         { to: "/categorias", label: "Categorias", icon: <Folder size={18} /> },
-        { to: "/fornecedoras", label: "Fornecedoras", icon: <Truck size={18} /> },
+        { to: "/Fornecedores", label: "Fornecedores", icon: <Truck size={18} /> },
       ],
     },
     {

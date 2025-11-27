@@ -25,7 +25,7 @@ export default function Produtos({ token: _token }: ProdutosProps) {
       descricao: "Notebook Dell Inspiron 15 com processador Intel i5",
       sku: "NBK-DEL-001",
       categoria: "Eletrônicos",
-      estoque: 45,
+      estoque: 2,
       preco: 2499.9,
       status: "ATIVO",
       fornecedor: "Dell Brasil",
@@ -36,7 +36,7 @@ export default function Produtos({ token: _token }: ProdutosProps) {
       descricao: "Mouse wireless ergonômico para produtividade",
       sku: "MOU-LOG-001",
       categoria: "Periféricos",
-      estoque: 23,
+      estoque: 8,
       preco: 299.9,
       status: "ATIVO",
       fornecedor: "Logitech",
@@ -211,9 +211,12 @@ export default function Produtos({ token: _token }: ProdutosProps) {
                       <td className="py-4 px-6 text-sm text-gray-700">{p.sku}</td>
                       <td className="py-4 px-6 text-sm text-gray-700">{p.categoria}</td>
                       <td className="py-4 px-6">
-                        <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${estoqueStatus.class}`}>
-                          {estoqueStatus.label}
-                        </span>
+                        <div className="flex items-center gap-2">
+                          <span className="text-sm font-medium text-gray-800">{p.estoque}</span>
+                          <span className={`inline-block px-2 py-1 rounded-full text-xs font-semibold ${estoqueStatus.class}`}>
+                            {estoqueStatus.label}
+                          </span>
+                        </div>
                       </td>
                       <td className="py-4 px-6 text-sm font-medium text-gray-800">
                         {p.preco.toLocaleString("pt-BR", {

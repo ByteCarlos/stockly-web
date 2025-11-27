@@ -56,9 +56,9 @@ const Dashboard: React.FC<DashboardProps> = ({ token: _token }) => {
       id: 1,
       name: 'Notebook Dell Inspiron',
       category: 'Eletrônicos',
-      stock: 45,
+      stock: 2,
       price: 2499.90,
-      status: 'NORMAL',
+      status: 'CRITICO',
       lastUpdate: 'Hoje, 14:30'
     },
     {
@@ -215,7 +215,7 @@ const Dashboard: React.FC<DashboardProps> = ({ token: _token }) => {
             <div className="flex items-center justify-between mb-2">
               <div>
                 <p className="text-3xl font-bold text-gray-800">23</p>
-                <p className="text-sm text-gray-600 font-medium">ESTOQUE BAIXO</p>
+                <p className="text-sm text-gray-600 font-medium">ITENS COM ESTOQUE BAIXO</p>
               </div>
               <div className="bg-yellow-50 p-3 rounded-lg">
                 <AlertCircle className="w-6 h-6 text-yellow-600" />
